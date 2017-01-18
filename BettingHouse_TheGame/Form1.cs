@@ -21,10 +21,10 @@ namespace BettingHouse_TheGame
         }
     private void SetupRaceTrack()
         {
-            MinimumBet.Text = string.Format("Minimalny zakład: {0} zł", (int)BetAmount.Minimu,);
+            MinimumBet.Text = string.Format("Minimalny zakład: {0} zł", (int)BetAmount.Minimum);
 
-            int startingPosition = pictureBoxDog2.Right - SetupRaceTrack.Left;
-            int raceTracklenght = raceTracklenght.Size.Width;
+            int startingPosition = dog1.Right - racetrack .Left;
+            int raceTrackLenght = racetrack .Size.Width;
 
             guys[0] = new Guy("Janek",null,50, janekButton, janekBet );
             guys[1] = new Guy("Bartek",null,75, bartekButton, bartekBet );
@@ -38,38 +38,68 @@ namespace BettingHouse_TheGame
             dogs[0] = new Greyhound()
             {
                 MyPictureBox = dog1,
-                RacetrackLength = raceTrackLength,
+                RacetrackLenght  = raceTrackLenght,
                 StartingPosition = startingPosition
             };
             dogs[1] = new Greyhound()
             {
                 MyPictureBox = dog2,
-                RacetrackLength = raceTrackLength,
+                RacetrackLenght  = raceTrackLenght ,
                 StartingPosition = startingPosition
             };
             dogs[2] = new Greyhound()
             {
                 MyPictureBox = dog3,
-                RacetrackLength = raceTrackLength,
+                RacetrackLenght  = raceTrackLenght ,
                 StartingPosition = startingPosition
             };
             dogs[3] = new Greyhound()
             {
                 MyPictureBox = dog4,
-                RacetrackLength = raceTrackLength,
+                RacetrackLenght = raceTrackLenght ,
                 StartingPosition = startingPosition
             };
         }
 
         private void startButton_Click(object sender, EventArgs e)
         {
-            while (Run()==false )
-            {
-                for (int i = 0; i < 4; i++)
-                {
+            bool NoWinner = true;
+            int winningDog;
+            startButton .Enabled  = false;
 
+            while (NoWinner )
+            {
+                Application.DoEvents();
+                for (int i = 0 ; i < dogs.Length; i++)
+                {
+                    if (dogs[i].Run())
+                    {
+                        winningDog = i + 1;
+                        NoWinner = false;
+                        MessageBox.Show("Zwyciężył pies nr " + winningDog);
+                        foreach (Guy guy in guys)
+                        {
+                            if (guy.MyBet != null)
+                            {
+                                guy.Collect(winningDog);
+                                guy.MyBet = null;
+                                guy.UpdateLabels();
+                            }
+                        }
+                        foreach(Greyhound dog in dogs)
+                        {
+                            dog.TakeStartingPositin();
+                        }
+                        break;
+                    }
                 }
             }
+           startButton .Enabled = true;
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

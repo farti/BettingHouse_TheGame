@@ -22,6 +22,7 @@ namespace BettingHouse_TheGame
 
         public string GetDescription()
         {
+            string description = "";
              // zwraca string , który określa, kto obstawił wyści, jak dużo pieniędzy obstawił
              // i na którego psa ("Janek postawił 8 zł na psa numer 4").
              // jeżeli zero , zakład nie został zawarty ("Janek nie zawarł zakładu")
